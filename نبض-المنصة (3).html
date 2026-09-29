@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نبض — طبقة الربط بين بنوك الدم</title>
+<meta name="description" content="منصّة تُظهر مخزون الدم في ١٣ بنك دم بالرياض في مكان واحد، تتنبأ بالنقص قبل وقوعه بـ٧٢ ساعة، وتطابق الطلب العاجل بأقرب مصدر متوافق آلياً.">
+<meta property="og:title" content="نبض — طبقة الربط بين بنوك الدم">
+<meta property="og:description" content="مخزون ١٣ بنك دم في مكان واحد · تنبؤ بالنقص قبل ٧٢ ساعة · مطابقة آلية في ٤٧ ثانية">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#C5102F">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="نبض">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23C5102F'/%3E%3Cpath d='M5 16h4l3-8 4 16 3-8h6' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#C5102F; --red-d:#9E0C25; --red-l:#E8304C;
+  --tint:#FCF2F3; --tint-2:#F8E3E7;
+  --low:#D9788E; --low-bg:#F7DDE2;
+  --ink:#14181C; --ink-2:#3A424A; --muted:#858C95; --muted-2:#A8AEB6;
+  --line:#E8E8EA; --line-2:#F1F1F3;
+  --bg:#F4F4F5; --card:#FFFFFF;
+  --ok:#15191E;
+  --r:10px; --r-lg:14px;
+  --f:'IBM Plex Sans Arabic','Tajawal',system-ui,'Segoe UI',Tahoma,sans-serif;
+  --sh:0 1px 2px rgba(15,18,22,.05), 0 1px 12px rgba(15,18,22,.03);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--f); background:var(--bg); color:var(--ink);
+  font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  font-feature-settings:'tnum';
+}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums;direction:ltr;display:inline-block}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ───────── شاشات الدخول ───────── */
+.auth{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:26px}
+.mark{display:flex;align-items:center;gap:12px}
+.mark-box{width:40px;height:40px;border-radius:10px;background:var(--red);display:grid;place-items:center;flex-shrink:0}
+.mark h1{font-size:27px;font-weight:700;margin:0;letter-spacing:-.02em;line-height:1.2}
+.mark p{font-size:11.5px;color:var(--muted);margin:2px 0 0}
+.auth-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;width:100%;max-width:430px;box-shadow:var(--sh)}
+.auth-card.wide{max-width:720px}
+.auth-card h2{font-size:16.5px;font-weight:600;margin:0 0 4px}
+.auth-card .sub{font-size:12.5px;color:var(--muted);margin:0 0 20px;line-height:1.75}
+.gates{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.gates{grid-template-columns:1fr}}
+.gate{text-align:start;border:1px solid var(--line);border-radius:12px;padding:18px;background:#fff;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:8px}
+.gate:hover{border-color:var(--red);background:var(--tint)}
+.gate-ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:var(--tint);color:var(--red)}
+.gate h3{font-size:15px;font-weight:600;margin:2px 0 0}
+.gate p{font-size:12px;color:var(--muted);margin:0;line-height:1.75}
+.gate .who{font-size:11.5px;color:var(--muted-2);border-top:1px solid var(--line-2);padding-top:9px;margin-top:4px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11.5px;color:var(--muted);margin-bottom:6px}
+.field input,.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--r);background:#fff;transition:border-color .15s}
+.field input:focus,.field select:focus{border-color:var(--red);outline:none}
+.btn{background:var(--red);color:#fff;border-radius:var(--r);padding:11px 18px;font-size:13.5px;font-weight:500;transition:background .15s;width:100%}
+.btn:hover{background:var(--red-d)}
+.btn:disabled{background:#EFEFF1;color:var(--muted-2);cursor:not-allowed}
+.btn-sm{width:auto;padding:8px 15px;font-size:12.5px}
+.btn-o{background:#fff;border:1px solid var(--line);color:var(--ink-2);border-radius:var(--r);padding:8px 15px;font-size:12.5px;transition:border-color .15s}
+.btn-o:hover{border-color:var(--muted-2)}
+.hint{font-size:11.5px;color:var(--muted-2);text-align:center;margin:14px 0 0;line-height:1.8}
+.err{background:var(--tint);border:1px solid var(--tint-2);border-inline-start:3px solid var(--red);border-radius:8px;padding:11px 13px;font-size:12.5px;color:var(--red-d);margin-bottom:14px;line-height:1.75}
+.foot-meta{display:flex;align-items:center;gap:14px;font-size:11.5px;color:var(--muted-2)}
+.badge{border:1px solid var(--line);border-radius:20px;padding:4px 11px;font-size:11px;color:var(--muted);background:#fff}
+.back{font-size:12.5px;color:var(--muted);background:none;padding:0;margin-top:16px;display:block;text-align:center;width:100%}
+.back:hover{color:var(--red)}
+
+/* بوابة الهوية */
+.idp{min-height:100vh;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.idp-card{background:#fff;border:1px solid var(--line);border-radius:14px;width:100%;max-width:460px;overflow:hidden;box-shadow:var(--sh)}
+.idp-head{background:var(--red);color:#fff;padding:20px 24px}
+.idp-head h2{font-size:16px;margin:0;font-weight:600}
+.idp-head p{font-size:11.5px;margin:4px 0 0;color:#F6C9D1}
+.idp-body{padding:22px 24px 24px}
+.acct{width:100%;text-align:start;border:1px solid var(--line);border-radius:9px;padding:11px 13px;margin-bottom:8px;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px;transition:border-color .15s,background .15s}
+.acct:hover{border-color:var(--red);background:var(--tint)}
+.acct .u{font-size:13px;font-weight:500;direction:ltr}
+.acct .r{font-size:11.5px;color:var(--muted)}
+.otp{background:var(--tint);border:1px dashed var(--tint-2);border-radius:9px;padding:10px 13px;font-size:12.5px;color:var(--red-d);margin-bottom:14px}
+.btn-g{background:var(--red);color:#fff;border-radius:var(--r);padding:11px 18px;font-size:13.5px;width:100%;font-weight:500}
+.btn-g:hover{background:var(--red-d)}
+
+/* قائمة خدمات نبض */
+.menu-wrap{position:relative}
+.menu{position:absolute;inset-inline-start:0;top:calc(100% + 7px);width:268px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r-lg);box-shadow:0 12px 34px rgba(15,18,22,.12);z-index:50;overflow:hidden}
+.menu .mh{font-size:11px;color:var(--muted-2);padding:11px 16px 7px}
+.menu a{display:block;padding:11px 16px;border-top:1px solid var(--line-2);text-decoration:none;transition:background .12s;cursor:pointer}
+.menu a:hover{background:var(--bg)}
+.menu a.on{background:var(--tint)}
+.menu a.on .t{color:var(--red)}
+.menu .t{font-size:13.5px;font-weight:600}
+.menu .s2{font-size:11px;color:var(--muted);margin-top:2px}
+.menu .mf{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1px solid var(--line);background:var(--bg)}
+.menu .mf span{font-size:12px;color:var(--muted)}
+.link{font-size:11px;color:var(--red);background:none;padding:0;text-decoration:none;border-bottom:1px solid transparent}
+.link:hover{border-bottom-color:var(--red)}
+
+/* ───────── هيكل التطبيق ───────── */
+.app{min-height:100vh;display:flex;flex-direction:column}
+.hdr{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 24px;flex-wrap:wrap}
+.hdr-id{display:flex;align-items:center;gap:12px}
+.hdr-id .mark-box{width:36px;height:36px}
+.hdr-id h1{font-size:17.5px;font-weight:700;margin:0;letter-spacing:-.02em}
+.hdr-id p{font-size:11.5px;color:var(--muted);margin:2px 0 0}
+.hdr-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chips{display:flex;gap:5px;background:var(--bg);padding:4px;border-radius:9px}
+.chip{padding:6px 12px;border-radius:6px;font-size:12.5px;color:var(--muted);transition:background .15s,color .15s;direction:ltr}
+.chip:hover{color:var(--ink)}
+.chip.on{background:var(--red);color:#fff;font-weight:500}
+.sync{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted)}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pl 2.2s infinite}
+@keyframes pl{0%,100%{opacity:1}50%{opacity:.3}}
+.tabs{display:flex;gap:6px;padding:0 24px 12px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:8px;font-size:13px;color:var(--ink-2);border:1px solid var(--line);background:#fff;transition:all .15s}
+.tab:hover{border-color:var(--muted-2)}
+.tab.on{background:var(--red);color:#fff;border-color:var(--red);font-weight:500}
+.crumb{margin-inline-start:auto;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--muted-2)}
+
+.emg{background:var(--red);color:#fff;padding:9px 24px;font-size:12.5px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.emg b{font-weight:600}
+.emg .sp{margin-inline-start:auto;font-size:11.5px;opacity:.85}
+
+main{padding:18px 24px 40px;flex:1}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-bottom:16px}
+.kpi{padding:16px 20px;border-inline-start:1px solid var(--line-2)}
+.kpi:first-child{border-inline-start:none}
+.kpi .l{font-size:11.5px;color:var(--muted)}
+.kpi .v{font-size:31px;font-weight:600;letter-spacing:-.02em;line-height:1.25;margin-top:2px}
+.kpi .v small{font-size:14px;font-weight:400;color:var(--muted);margin-inline-start:4px}
+.kpi .s{font-size:11px;color:var(--muted-2);margin-top:2px}
+.kpi.crit .v{color:var(--red)}
+
+.cols{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.col-main{flex:1;min-width:440px}
+.col-side{width:326px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+@media(max-width:1040px){.col-side{width:100%}.col-main{min-width:100%}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--sh)}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.card-h h2{font-size:14.5px;font-weight:600;margin:0}
+.card-h .m{font-size:11px;color:var(--muted-2)}
+.card-h .m b{color:var(--muted);font-weight:400}
+
+/* الخريطة */
+.mapbox{border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden;background:#fff}
+.map-legend{display:flex;align-items:center;gap:16px;padding:10px 4px 0;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}
+.lg{display:inline-flex;align-items:center;gap:6px}
+.lg i{width:10px;height:10px;display:inline-block}
+.lg i.sq{background:var(--red)}
+.lg i.tr{width:0;height:0;border-inline-start:5px solid transparent;border-inline-end:5px solid transparent;border-bottom:9px solid var(--low)}
+.lg i.ci{background:var(--ok);border-radius:50%}
+.map-note{font-size:11px;color:var(--muted-2);margin-inline-start:auto}
+.mk{cursor:pointer}
+.mk text{font-size:12px}
+
+/* مخزون الفصائل */
+.inv-row{display:flex;align-items:center;gap:10px;padding:5px 0}
+.inv-row .bt{width:34px;font-size:12.5px;font-weight:600;direction:ltr;text-align:start}
+.inv-bar{flex:1;height:7px;background:var(--line-2);border-radius:4px;overflow:hidden}
+.inv-bar i{display:block;height:100%;border-radius:4px;background:var(--red)}
+.inv-row .n{font-size:11.5px;color:var(--muted);min-width:56px;text-align:end;direction:ltr}
+.inv-row .n b{color:var(--ink);font-weight:600}
+
+.alert-card{border-top:3px solid var(--red)}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--red);font-weight:600}
+.match{background:var(--tint);border-radius:9px;padding:11px 13px;margin-top:10px}
+.match .l{font-size:10.5px;color:var(--muted)}
+.match .n{font-size:13px;font-weight:600;margin:2px 0 3px}
+.match .d{font-size:11.5px;color:var(--muted)}
+.conf{height:5px;background:var(--line-2);border-radius:3px;overflow:hidden;margin-top:10px}
+.conf i{display:block;height:100%;background:var(--red)}
+.rec{background:var(--bg);border-radius:9px;padding:11px 13px;margin-top:10px;font-size:12px;color:var(--ink-2);line-height:1.85}
+.rec b{color:var(--red);font-weight:600}
+p.body{font-size:12.5px;color:var(--ink-2);line-height:1.9;margin:0}
+p.body b{font-weight:600}
+
+/* الجداول */
+table{width:100%;border-collapse:collapse}
+th{font-size:11.5px;color:var(--muted);font-weight:400;text-align:start;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line-2);font-size:13px}
+tbody tr{transition:background .12s;cursor:pointer}
+tbody tr:hover{background:var(--tint)}
+tbody tr.on{background:var(--tint)}
+.nm{font-weight:600;font-size:13.5px}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:12px}
+.st i{width:9px;height:9px;display:inline-block}
+.st.crit{color:var(--red)}.st.crit i{background:var(--red)}
+.st.low{color:var(--low)}.st.low i{width:0;height:0;border-inline-start:5px solid transparent;border-inline-end:5px solid transparent;border-bottom:9px solid var(--low)}
+.st.ok{color:var(--ink-2)}.st.ok i{background:var(--ok);border-radius:50%}
+.ratio{direction:ltr;font-size:12.5px}
+.ratio b{font-weight:600}
+.filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.count{margin-inline-start:auto;font-size:11.5px;color:var(--muted-2);align-self:center}
+
+/* الطلبات */
+.req{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:9px;cursor:pointer;transition:border-color .15s}
+.req:hover{border-color:var(--muted-2)}
+.req.on{border-color:var(--red);border-top:2px solid var(--red)}
+.req-top{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.req .t{font-size:14px;font-weight:600}
+.req .d{font-size:12px;color:var(--muted);margin-top:3px}
+.req .r{text-align:end;font-size:12px}
+.req .r .l{font-size:10.5px;color:var(--muted-2)}
+.req .r .v{color:var(--ink-2);margin-top:2px}
+.state{font-size:11.5px;font-weight:500}
+.state.accepted{color:var(--red)}
+.state.transit{color:var(--ink-2)}
+.state.waiting{color:var(--low)}
+
+/* التنبؤ */
+.bars .b{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:12.5px}
+.bars .b .nm2{min-width:120px;color:var(--ink-2)}
+.bars .b .bar{flex:1;height:8px;background:var(--line-2);border-radius:4px;overflow:hidden}
+.bars .b .bar i{display:block;height:100%;background:var(--ink)}
+.bars .b .v{font-size:11.5px;color:var(--muted);min-width:58px;text-align:end}
+.chart-note{font-size:11px;color:var(--muted-2)}
+.axis{font-size:11px;fill:var(--muted-2)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+.stat-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line-2);font-size:12.5px}
+.stat-line:last-child{border-bottom:none}
+.stat-line .k{color:var(--muted)}
+.stat-line .v{font-weight:600;direction:ltr}
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:20px;text-align:center;color:var(--muted);font-size:12.5px}
+.disc{font-size:11px;color:var(--muted-2);line-height:1.9;margin-top:20px;max-width:86ch}
+.modal-bg{position:fixed;inset:0;background:rgba(15,18,22,.45);display:grid;place-items:center;z-index:60;padding:20px}
+.modal{background:#fff;border-radius:var(--r-lg);padding:22px;max-width:460px;width:100%}
+.modal h3{margin:0 0 6px;font-size:16px}
+.modal p{font-size:12.5px;color:var(--muted);margin:0 0 14px;line-height:1.8}
+textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--r);min-height:88px;resize:vertical}
+textarea:focus{border-color:var(--red);outline:none}
+.toast{position:fixed;inset-inline-start:24px;bottom:24px;background:var(--ink);color:#fff;padding:13px 18px;border-radius:var(--r);font-size:12.5px;z-index:70;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.hide{display:none!important}
+
+/* ───────── الهواتف ───────── */
+@media(max-width:760px){
+  body{font-size:13.5px}
+  .hdr-top{padding:11px 14px;gap:12px}
+  .hdr-id h1{font-size:15.5px}
+  .hdr-id p{font-size:10.5px}
+  .hdr-tools{gap:7px;width:100%}
+  .chips{width:100%;justify-content:space-between}
+  .chip{flex:1;text-align:center;padding:7px 4px;font-size:12px}
+  .sync,.badge{font-size:10.5px}
+  .tabs{padding:0 14px 10px;gap:5px;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:7px 13px;font-size:12.5px;white-space:nowrap;flex-shrink:0}
+  .crumb{display:none}
+  main{padding:14px 14px 32px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi{padding:13px 14px;border-top:1px solid var(--line-2)}
+  .kpi:nth-child(-n+2){border-top:none}
+  .kpi:nth-child(odd){border-inline-start:none}
+  .kpi .v{font-size:25px}
+  .cols{gap:12px}
+  .col-main{min-width:100%}
+  .col-side{width:100%}
+  .card{padding:14px}
+  .card-h{margin-bottom:11px}
+  .menu{width:min(268px,calc(100vw - 28px))}
+  .emg{padding:9px 14px;font-size:11.5px}
+  .emg .sp{margin-inline-start:0;width:100%}
+  .req-top{gap:8px}
+  .req .r{text-align:start}
+  .disc{font-size:10.5px}
+  /* الجداول تنزلق أفقياً بدل أن تكسر الصفحة */
+  .card > table{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+  .auth{padding:28px 16px;gap:20px}
+  .auth-card{padding:20px}
+  .mark h1{font-size:23px}
+  .foot-meta{flex-direction:column;gap:7px;text-align:center}
+  .map-legend{gap:11px;font-size:11px}
+  .map-note{margin-inline-start:0;width:100%}
+}
+@media(max-width:430px){
+  .kpis{grid-template-columns:1fr}
+  .kpi{border-inline-start:none;border-top:1px solid var(--line-2)}
+  .kpi:first-child{border-top:none}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   نبض — طبقة الربط بين بنوك الدم | الرياض
+   ملف واحد، بلا تثبيت، بلا اعتماديات خارجية وقت التشغيل.
+   البيانات مرجعية للعرض وليست مخزوناً فعلياً.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ───────── البيانات المرجعية ───────── */
+const TYPES = ["O+","A+","B+","AB+","O-","A-","B-","AB-"];
+const MIX = {"O+":.48,"A+":.24,"B+":.17,"AB+":.04,"O-":.036,"A-":.018,"B-":.013,"AB-":.003};
+const COMPAT = {"O-":["O-"],"O+":["O-","O+"],"A-":["O-","A-"],"A+":["O-","O+","A-","A+"],
+  "B-":["O-","B-"],"B+":["O-","O+","B-","B+"],"AB-":["O-","A-","B-","AB-"],"AB+":TYPES.slice()};
+
+/* ١٣ بنك دم — النطاق (شمال/جنوب/شرق/غرب/وسط) وموقع تخطيطي على خريطة الرياض */
+const BANKS = [
+  {id:"ksmc", name:"الملك سعود الطبية",    full:"مدينة الملك سعود الطبية",             d:"الشميسي",          z:"وسط",  cap:513, x:.56,y:.72},
+  {id:"kfsh", name:"الملك فيصل التخصصي",  full:"مستشفى الملك فيصل التخصصي",          d:"المعذر",           z:"وسط",  cap:513, x:.47,y:.52},
+  {id:"ngha", name:"الحرس الوطني",          full:"مدينة الملك عبدالعزيز الطبية — الحرس الوطني", d:"الحرس الوطني", z:"غرب", cap:513, x:.34,y:.58},
+  {id:"kkuh", name:"الملك خالد الجامعي",   full:"مستشفى الملك خالد الجامعي",          d:"المدينة الجامعية", z:"غرب",  cap:324, x:.27,y:.46},
+  {id:"psmm", name:"قوى الأمن",             full:"مستشفى قوى الأمن",                   d:"السليمانية",       z:"وسط",  cap:324, x:.52,y:.40},
+  {id:"iahb", name:"الإمام عبدالرحمن",     full:"مستشفى الإمام عبدالرحمن الفيصل",     d:"النرجس",           z:"شمال", cap:197, x:.62,y:.24},
+  {id:"kauh", name:"الملك عبدالله الجامعي",full:"مستشفى الملك عبدالله الجامعي",       d:"المدينة الجامعية شمالاً", z:"شمال", cap:171, x:.38,y:.20},
+  {id:"sger", name:"السعودي الألماني",     full:"المستشفى السعودي الألماني",          d:"المروج",           z:"شمال", cap:171, x:.55,y:.14},
+  {id:"dallah",name:"دلة النخيل",           full:"مستشفى دلة النخيل",                  d:"النخيل",           z:"شمال", cap:171, x:.72,y:.18},
+  {id:"erh",  name:"شرق الرياض",            full:"مستشفى شرق الرياض",                  d:"الرمال",           z:"شرق",  cap:323, x:.83,y:.44},
+  {id:"ksh",  name:"الملك سلمان",           full:"مستشفى الملك سلمان",                 d:"السويدي",          z:"جنوب", cap:323, x:.76,y:.68},
+  {id:"yam",  name:"اليمامة",               full:"مستشفى اليمامة",                     d:"الربيعة",          z:"وسط",  cap:171, x:.63,y:.60},
+  {id:"hswd", name:"الحمادي السويدي",      full:"مستشفى الحمادي — السويدي",           d:"السويدي",          z:"جنوب", cap:171, x:.46,y:.84},
+];
+
+/* الحسابات — تصفية الصلاحيات هنا في المتصفح للعرض؛ في المنصّة الحقيقية على الخادم */
+const USERS = {
+  "f.alqahtani":{name:"فهد القحطاني",  gate:"nafees",  role:"مدير مصرف الدم الإقليمي", scope:"all",  can:["view","act"]},
+  "h.almutairi":{name:"هند المطيري",   gate:"nafees",  role:"مراقبة الجودة",            scope:"all",  can:["view"]},
+  "y.alzahrani":{name:"ياسر الزهراني", gate:"nafees",  role:"مسؤول تقنية المعلومات",   scope:"none", can:[]},
+  "n.alharbi": {name:"نورة الحربي",   gate:"hospital",role:"مسؤولة بنك الدم",          scope:"ksmc", can:["view","act"]},
+  "s.aldosari":{name:"سعد الدوسري",   gate:"hospital",role:"مسؤول بنك الدم",           scope:"hswd", can:["view","act"]},
+  "m.alotaibi":{name:"منال العتيبي",  gate:"hospital",role:"فنية مختبر",               scope:"kfsh", can:["view"]},
+  "a.alshehri":{name:"عبدالله الشهري",gate:"hospital",role:"استشاري جراحة",            scope:"yam",  can:["view","act","emergency"]},
+};
+
+/* ───────── توليد الحالة (ثابت خلال اليوم) ───────── */
+function seeded(s){let a=s>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}}
+const DAYSEED = Math.floor(Date.now()/864e5);
+
+function buildState(){
+  const st={};
+  BANKS.forEach((b,i)=>{
+    const r=seeded(DAYSEED*131+i*977), inv={};
+    // منحنى صحة ثابت التوزيع: أربعة بنوك تحت ضغط، ثلاثة على الحد، ستة مستقرة.
+    // يدور يومياً فتتغيّر المنشآت المتأثرة، وتبقى صورة الشبكة واقعية لا عشوائية.
+    const CURVE=[.30,.37,.43,.49,.72,.81,.90,1.14,1.24,1.32,1.40,1.48,1.56];
+    const health = CURVE[(i+DAYSEED)%CURVE.length] * (0.94+r()*0.12);
+    TYPES.forEach(bt=>{
+      const safe = Math.max(7, Math.round(b.cap*MIX[bt]*0.92));
+      const f = health*(0.62+r()*0.80);              // نسبة التغطية من الحد الآمن
+      const units = Math.max(0, Math.round(safe*f));
+      const daily = Math.max(1, Math.round(safe/6));
+      inv[bt]={units, safe, daily, expiring: Math.round(units*(0.02+r()*0.09))};
+    });
+    st[b.id]=inv;
+  });
+  return st;
+}
+const statusOf = (u,s)=> u < s*0.5 ? "crit" : u < s ? "low" : "ok";
+const SL = {crit:{k:"crit",t:"حرج"}, low:{k:"low",t:"منخفض"}, ok:{k:"ok",t:"كافٍ"}};
+
+const S = {
+  screen:"gate", gate:null, user:null, view:"ops", type:"ALL",
+  focusBank:null, focusReq:null, emergency:null, toast:null,
+  inv:buildState(), reqs:[],
+};
+
+/* حالة بنك على فصيلة (أو أسوأ فصيلة عند "كل الفصائل") */
+function bankStatus(bid,type){
+  const inv=S.inv[bid];
+  if(type!=="ALL"){const r=inv[type];return {...r,st:statusOf(r.units,r.safe)}}
+  let tot=0, saf=0, critN=0, lowN=0;
+  TYPES.forEach(bt=>{
+    const r=inv[bt]; tot+=r.units; saf+=r.safe;
+    const s=statusOf(r.units,r.safe);
+    if(s==="crit"){critN++;lowN++} else if(s==="low") lowN++;
+  });
+  // حالة البنك ككل: لا تُرفع للحرج بسبب فصيلة نادرة واحدة
+  const st = critN>=3 ? "crit" : (critN>=1||lowN>=5) ? "low" : "ok";
+  return {units:tot,safe:saf,daily:0,st,expiring:0};
+}
+const totalUnits = bid => TYPES.reduce((a,bt)=>a+S.inv[bid][bt].units,0);
+
+/* الطلبات المفتوحة تُشتق من العجز الحقيقي */
+function buildRequests(){
+  const type="O-";
+  const short = BANKS.map(b=>({b,r:S.inv[b.id][type]}))
+    .filter(o=>o.r.units < o.r.safe*0.5)
+    .sort((a,c)=>(a.r.units/a.r.safe)-(c.r.units/c.r.safe)).slice(0,5);
+  const states=["قيد النقل","تم القبول","بانتظار الموافقة","قيد النقل","قيد النقل"];
+  const cls={"قيد النقل":"transit","تم القبول":"accepted","بانتظار الموافقة":"waiting"};
+  return short.map((o,i)=>{
+    const need=o.r.safe-o.r.units;
+    const src=BANKS.filter(x=>x.id!==o.b.id&&S.inv[x.id][type].units>S.inv[x.id][type].safe)
+      .sort((a,c)=>dist(o.b,a)-dist(o.b,c))[0]||BANKS[0];
+    const km=dist(o.b,src);
+    return {id:"r"+i, bank:o.b, type, units: i===0?6:need, src, km:km.toFixed(1),
+      eta: Math.round(km*1.6+6), state:states[i], cls:cls[states[i]],
+      urgent: i===0,
+      why: i===0 ? "نزيف حاد بعد حادث مروري" : `نقص محسوب تحت نصف الحد الآمن — ${need} وحدة`,
+      ago: i===0?"قبل ٤ دقائق":`قبل ${(i*9+7)} دقيقة`};
+  });
+}
+const dist=(a,b)=>{const dx=(a.x-b.x)*42, dy=(a.y-b.y)*38; return Math.max(1.4,Math.sqrt(dx*dx+dy*dy))};
+
+const ar = n => new Intl.NumberFormat("ar-SA").format(n);
+const el = (h)=>{const t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstChild};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LOGO = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2.5-7 4 14 2.5-7h5"/></svg>`;
+
+function toast(msg){S.toast=msg;render();clearTimeout(window._tt);window._tt=setTimeout(()=>{S.toast=null;render()},3800)}
+
+/* ═════════ ١. شاشة اختيار المدخل ═════════ */
+function viewGate(){
+  return `<div class="auth">
+    <div class="mark"><div class="mark-box">${LOGO}</div>
+      <div><h1>نبض</h1><p>طبقة الربط بين بنوك الدم — الرياض</p></div></div>
+
+    <div class="auth-card wide">
+      <h2>اختر مدخلك</h2>
+      <p class="sub">لكل جهة مدخل مستقل وصلاحيات مختلفة. حساب المنشأة لا يعمل من مدخل نفيس، والعكس.</p>
+      <div class="gates">
+        <button class="gate" data-gate="hospital">
+          <div class="gate-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M10 12h4M12 10v4"/></svg></div>
+          <h3>منسوبو المستشفى</h3>
+          <p>مخزون منشأتك وطلباتها وتنبؤها وحدها.</p>
+          <span class="who">للأطباء ومسؤولي بنك الدم وفنيي المختبر</span>
+        </button>
+        <button class="gate" data-gate="nafees">
+          <div class="gate-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 2.5 15.2 0 18M12 3c-2.5 2.8-2.5 15.2 0 18"/></svg></div>
+          <h3>منصة نفيس</h3>
+          <p>الإشراف الإقليمي على بنوك الدم في الرياض كاملة.</p>
+          <span class="who">لمصرف الدم الإقليمي ومراقبة الجودة وتقنية المعلومات</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="foot-meta"><span class="badge">بيانات تجريبية للعرض</span>
+      <span>١٣ بنك دم متصل · مزامنة مباشرة ${nowHM()}</span>
+      ${S.canInstall?`<button class="btn-o" id="install">تثبيت التطبيق على جهازك</button>`:""}</div>
+  </div>`;
+}
+const nowHM=()=>new Date().toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"});
+
+/* ═════════ ٢. شاشة تسجيل الدخول ═════════ */
+function viewLogin(){
+  const hosp = S.gate==="hospital";
+  return `<div class="auth">
+    <div class="mark"><div class="mark-box">${LOGO}</div>
+      <div><h1>نبض</h1><p>طبقة الربط بين بنوك الدم — الرياض</p></div></div>
+
+    <div class="auth-card">
+      <h2>${hosp?"دخول منسوبي المستشفى":"دخول منصة نفيس"}</h2>
+      <p class="sub">${hosp?"اختر منشأتك ثم أدخل اسم المستخدم. يفتح مخزون تلك المنشأة وطلباتها وحدها."
+        :"الإشراف الإقليمي على ١٣ بنك دم في الرياض."}</p>
+      ${S.loginErr?`<div class="err">${S.loginErr}</div>`:""}
+      ${S.notice?`<div class="err" style="border-inline-start-color:var(--muted);color:var(--ink-2);background:var(--bg);border-color:var(--line)">${S.notice}</div>`:""}
+      ${hosp?`<div class="field"><label>المنشأة</label><select id="fac">
+        <option value="">— أي منشأة (افتراضي: مدينة الملك سعود الطبية) —</option>
+        ${BANKS.map(b=>`<option value="${b.id}" ${S.fac===b.id?"selected":""}>${b.full}</option>`).join("")}
+      </select></div>`:""}
+      <div class="field"><label>اسم المستخدم</label>
+        <input id="usr" placeholder="اكتب اسم المستخدم" value="${S.usr||""}" autocomplete="off"></div>
+      <button class="btn" id="go">المتابعة إلى بوابة الهوية</button>
+      <p class="hint">للتجربة: اكتب أي اسم مستخدم وادخل. الحسابات التجريبية أدناه تحتفظ بأدوارها المقيّدة.</p>
+      <button class="back" id="back">↩ رجوع لاختيار المدخل</button>
+    </div>
+
+    <div class="foot-meta"><span class="badge">بيانات تجريبية للعرض</span>
+      <span>١٣ بنك دم متصل · مزامنة مباشرة ${nowHM()}</span></div>
+  </div>`;
+}
+
+/* ═════════ ٣. بوابة الهوية (محاكاة SSO) ═════════ */
+function viewIdp(){
+  const list = Object.entries(USERS).filter(([,u])=>u.gate===S.gate);
+  return `<div class="idp"><div class="idp-card">
+    <div class="idp-head">
+      <h2>بوابة الهوية الصحية الموحّدة</h2>
+      <p>${S.gate==="hospital"?"حسابات منسوبي المنشآت":"حسابات منصة نفيس"} · جهة تحقق مستقلة عن نبض</p>
+    </div>
+    <div class="idp-body">
+      ${S.idpErr?`<div class="err">${S.idpErr}</div>`:""}
+      ${S.notice?`<div class="otp" style="border-style:solid">${S.notice}</div>`:""}
+      <div class="field"><label>تدخل باسم</label>
+        <div class="acct" style="cursor:default;border-color:var(--red);background:var(--tint)">
+          <span><span class="u">${esc(S.usr||"زائر")}</span><br>
+          <span class="r">${USERS[S.usr]?USERS[S.usr].name+" · "+USERS[S.usr].role:"حساب تجريبي · صلاحيات "+(S.gate==="hospital"?"مسؤول بنك دم":"مصرف الدم الإقليمي")}</span></span>
+          ${S.fac?`<span class="r">${BANKS.find(b=>b.id===S.fac).name}</span>`:""}
+        </div></div>
+      <div class="field"><label>أو اختر حساباً تجريبياً آخر</label>
+        ${list.map(([u,d])=>`<button class="acct" data-u="${u}">
+          <span><span class="u">${u}</span><br><span class="r">${d.name} · ${d.role}</span></span>
+          ${d.scope!=="all"&&d.scope!=="none"?`<span class="r">${BANKS.find(b=>b.id===d.scope).name}</span>`:""}
+        </button>`).join("")}
+      </div>
+      <div class="field"><label>كلمة المرور</label><input type="password" id="pw" value="demo1234"></div>
+      <div class="otp">رمز التحقق المرسل برسالة نصية: <b class="num">${otpCode()}</b> — في العرض أي رمز يُقبل</div>
+      <div class="field"><label>رمز التحقق</label><input id="otp" class="num" placeholder="٦ أرقام" value="${otpCode()}"></div>
+      <button class="btn-g" id="auth">تأكيد الهوية والدخول</button>
+      <button class="back" id="back">↩ إلغاء والعودة</button>
+    </div>
+  </div></div>`;
+}
+const otpCode = ()=> String(100000 + (DAYSEED*7919)%899999);
+
+/* أي اسم مستخدم غير معروف يدخل كحساب تجريبي بصلاحيات المدخل نفسه.
+   الحسابات المعروفة تحتفظ بأدوارها المقيّدة ليبقى عرض الصلاحيات قائماً. */
+function resolveUser(){
+  const rec = USERS[S.usr];
+  if(rec) return {...rec, uname:S.usr, demo:false};
+  const label = S.usrRaw || S.usr;
+  return S.gate==="hospital"
+    ? {name:label, gate:"hospital", role:"مسؤول بنك الدم", scope:S.fac||BANKS[0].id,
+       can:["view","act","emergency"], uname:S.usr, demo:true}
+    : {name:label, gate:"nafees", role:"مدير مصرف الدم الإقليمي", scope:"all",
+       can:["view","act"], uname:S.usr, demo:true};
+}
+
+/* ═════════ ٤. هيكل التطبيق ═════════ */
+const MENU_SUB = {
+  ops:"الخريطة والمؤشرات المباشرة",
+  banks:"١٣ بنكاً · المخزون والصلاحية",
+  inbox:"الطلبات العاجلة والمطابقة الآلية",
+  fc:"نقص وهدر متوقع خلال ٧٢ ساعة",
+  mine:"مخزون منشأتك وقراراتها",
+};
+const home = u => u.gate==="nafees" ? "ops" : "mine";
+function tabsFor(u,emgOn){
+  if(u.gate==="nafees")
+    return [["ops","غرفة العمليات"],["banks","بنوك الدم"],["inbox","صندوق الطلبات"],["fc","تنبؤ نبض"]];
+  // في وضع الطوارئ يتّسع نطاق منسوب المستشفى فتُفتح له شاشات الشبكة
+  return emgOn
+    ? [["mine","بنك الدم"],["ops","غرفة العمليات"],["banks","بنوك الدم"],["inbox","صندوق الطلبات"],["fc","تنبؤ نبض"]]
+    : [["mine","بنك الدم"],["inbox","صندوق الطلبات"],["fc","تنبؤ نبض"]];
+}
+
+function viewApp(){
+  const u=S.user, nafees=u.gate==="nafees";
+  const myBank = nafees?null:BANKS.find(b=>b.id===u.scope);
+  const emgOn = S.emergency && S.emergency.until>Date.now();
+  const wide = nafees || emgOn;
+
+  const titles={ops:["غرفة عمليات الرياض",`طبقة الربط بين بنوك الدم — ١٣ بنك دم متصل`],
+    banks:["بنوك الدم",`١٣ بنك دم متصل · الحالة محسوبة ${S.type==="ALL"?"على الفصائل الثمانية":"لفصيلة "+S.type}`],
+    inbox:["صندوق الطلبات",`${S.reqs.length} طلبات مفتوحة · مطابقة آلية تلقائية عند تجاوز نصف الحد الآمن`],
+    fc:["تنبؤ نبض · نقص وهدر","أفق ٧٢ ساعة · ثقة النموذج ٩١٪"],
+    mine:[myBank?myBank.full:"", `بنك دمك · ${myBank?myBank.d+" · "+myBank.z:""}`]};
+  const [t1,t2]=titles[S.view]||titles.ops;
+
+  return `<div class="app">
+    <header class="hdr">
+      <div class="hdr-top">
+        <div class="hdr-id"><div class="mark-box">${LOGO}</div>
+          <div><h1>${S.view==="ops"?"نبض · "+t1:t1}</h1><p>${t2}</p></div></div>
+        <div class="hdr-tools">
+          <div class="chips">
+            <button class="chip ${S.type==="ALL"?"on":""}" data-t="ALL">كل الفصائل</button>
+            ${["O-","A+","B+"].map(t=>`<button class="chip ${S.type===t?"on":""}" data-t="${t}">${t}</button>`).join("")}
+          </div>
+          <span class="sync"><i class="pulse"></i> مزامنة مباشرة · ${nowHM()}</span>
+          <span class="badge">بيانات تجريبية للعرض</span>
+          <span class="menu-wrap">
+            <button class="btn-o" id="menuBtn">القائمة ☰</button>
+            ${S.menu?`<div class="menu">
+              <div class="mh">خدمات نبض</div>
+              ${tabsFor(u,emgOn).map(([k,l])=>`<a data-v2="${k}" class="${S.view===k?"on":""}">
+                <div class="t">${l}</div><div class="s2">${MENU_SUB[k]}</div></a>`).join("")}
+              <div class="mf"><span>${u.name}</span>
+                <button class="btn-o" id="logout" style="padding:5px 12px">خروج</button></div>
+            </div>`:""}
+          </span>
+          ${S.offline?`<span class="badge" style="border-color:var(--tint-2);background:var(--tint);color:var(--red-d)">بلا اتصال · نسخة محفوظة</span>`:""}
+          ${S.canInstall?`<button class="btn-o" id="install">تثبيت التطبيق</button>`:""}
+          ${u.can.includes("emergency")&&!emgOn?`<button class="btn-o" id="emg">إعلان طوارئ</button>`:""}
+          <button class="btn-o" id="switch">تبديل الحساب</button>
+        </div>
+      </div>
+      <div class="tabs">
+        ${tabsFor(u,emgOn).map(([k,l])=>`<button class="tab ${S.view===k?"on":""}" data-v="${k}">${l}</button>`).join("")}
+        <span class="crumb">
+          <span>نبض · ${(tabsFor(u,emgOn).find(x=>x[0]===S.view)||["",""])[1]}</span>
+          <span style="color:var(--line)">|</span>
+          <span>${u.name} · ${u.role}${myBank?" · "+myBank.name:""}</span>
+          ${S.view!==home(u)?`<button class="btn-o" data-v2="${home(u)}" style="padding:6px 13px">
+            ${home(u)==="ops"?"غرفة العمليات":"بنك الدم"} ←</button>`:""}
+        </span>
+      </div>
+    </header>
+    ${emgOn?`<div class="emg">
+      <b>وصول طوارئ مُفعّل</b> — نطاقك موسّع إلى ١٣ منشأة. كل إجراء مسجَّل باسم ${u.name}.
+      <span class="sp">السبب: ${esc(S.emergency.why)} · ينتهي بعد ${Math.ceil((S.emergency.until-Date.now())/60000)} دقيقة</span>
+    </div>`:""}
+    <main>${body(u,nafees,myBank,wide)}</main>
+    ${S.modal?viewModal():""}
+    ${S.toast?`<div class="toast">${esc(S.toast)}</div>`:""}
+  </div>`;
+}
+
+function body(u,nafees,myBank,wide){
+  if(u.scope==="none") return viewITBlocked(u);
+  switch(S.view){
+    case "ops":   return viewOps();
+    case "banks": return viewBanks(wide?null:u.scope);
+    case "inbox": return viewInbox(wide?null:u.scope);
+    case "fc":    return viewForecast(wide?null:u.scope);
+    case "mine":  return viewMine(myBank);
+    default:      return viewOps();
+  }
+}
+
+function viewITBlocked(u){
+  return `<div class="card" style="max-width:620px">
+    <div class="card-h"><h2>لا توجد بيانات سريرية في حسابك</h2></div>
+    <p class="body">دورك <b>${u.role}</b> يمنحك إدارة الحسابات والتكاملات والسجلات، ولا يمنحك أي وصول إلى مخزون الدم
+    أو الطلبات أو بيانات المرضى. هذا ليس خطأ في العرض بل تصميم مقصود: فصل الصلاحية التقنية عن الصلاحية السريرية.</p>
+    <div style="margin-top:16px">
+      <div class="stat-line"><span class="k">الحسابات النشطة</span><span class="v num">7</span></div>
+      <div class="stat-line"><span class="k">تكاملات المنشآت المتصلة</span><span class="v num">13</span></div>
+      <div class="stat-line"><span class="k">آخر مزامنة ناجحة</span><span class="v">${nowHM()}</span></div>
+      <div class="stat-line"><span class="k">أحداث دخول موحّد اليوم</span><span class="v num">41</span></div>
+      <div class="stat-line"><span class="k">محاولات دخول من مدخل خاطئ</span><span class="v num">3</span></div>
+    </div>
+  </div>`;
+}
+
+/* ═════════ غرفة العمليات ═════════ */
+function viewOps(){
+  const t=S.type;
+  const avail = BANKS.reduce((a,b)=> a + (t==="ALL"?totalUnits(b.id):S.inv[b.id][t].units),0);
+  const crit = BANKS.filter(b=>bankStatus(b.id,t).st==="crit").length;
+  const saved = t==="ALL"?268:Math.round(268*(MIX[t]||.1)*2.4);
+  const focus = S.focusBank?BANKS.find(b=>b.id===S.focusBank):BANKS.find(b=>b.id==="ksh");
+  const req = S.reqs[0];
+
+  return `
+  <div class="kpis">
+    <div class="kpi"><div class="l">وحدات الدم ${t==="ALL"?"المتاحة":t+" المتاحة"}</div>
+      <div class="v num">${ar(avail)}</div><div class="s">في ١٣ بنك دم داخل الرياض</div></div>
+    <div class="kpi"><div class="l">زمن المطابقة</div>
+      <div class="v num">47<small>ثانية</small></div><div class="s">كان ٣.٥ ساعة قبل الربط</div></div>
+    <div class="kpi"><div class="l">وحدات أُنقذت من الهدر</div>
+      <div class="v num">${ar(saved)}</div><div class="s">آخر ٣٠ يوماً بإعادة التوزيع</div></div>
+    <div class="kpi crit"><div class="l">بنوك دم بحالة حرجة</div>
+      <div class="v num">${ar(crit)}</div><div class="s">تحتاج تدخلاً خلال ٢٤ ساعة</div></div>
+  </div>
+
+  <div class="cols">
+    <div class="col-main">
+      <div class="card">
+        <div class="card-h"><h2>بنوك الدم على مستوى الرياض</h2>
+          <span class="m"><b>الحالة محسوبة ${t==="ALL"?"على الفصائل الثمانية":"لفصيلة "+t}</b> · حجم الشكل = سعة بنك الدم</span></div>
+        <div class="mapbox">${riyadhMap(t)}</div>
+        <div class="map-legend">
+          <span class="lg"><i class="ci"></i>كافٍ</span>
+          <span class="lg"><i class="tr"></i>منخفض</span>
+          <span class="lg"><i class="sq"></i>حرج</span>
+          <span class="map-note">اضغط أي بنك لعرض مخزونه · بطاقات الطلب والتنبؤ تفتحان تفاصيلهما · «القائمة» أعلى الشاشة لبقية الخدمات</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-side">
+      <div class="card">
+        <div class="card-h"><h2>مخزون الفصائل</h2>
+          <span class="m"><b>${focus.name}</b> · <button class="link" data-go="banks">تفاصيل البنك</button></span></div>
+        ${TYPES.map(bt=>{const r=S.inv[focus.id][bt];const p=Math.min(100,r.units/r.safe*100);
+          const s=statusOf(r.units,r.safe);
+          return `<div class="inv-row"><span class="bt">${bt}</span>
+            <span class="inv-bar"><i style="width:${p}%;background:${s==="ok"?"var(--ok)":s==="low"?"var(--low)":"var(--red)"}"></i></span>
+            <span class="n"><b>${r.units}</b> / ${r.safe}</span></div>`}).join("")}
+      </div>
+
+      ${req?`<div class="card alert-card">
+        <div class="card-h"><h2><span class="tag">⚠ طلب عاجل</span></h2>
+          <span class="m"><button class="link" data-go="inbox">صندوق الطلبات</button> · ${req.ago}</span></div>
+        <p class="body">${req.bank.full} يطلب <b>${ar(req.units)} · ${req.type}</b> وحدات — ${req.why}.</p>
+        <div class="match"><div class="l">المطابقة الآلية</div>
+          <div class="n">${req.src.full}</div>
+          <div class="d">${ar(S.inv[req.src.id][req.type].units)} وحدة متاحة · ${req.km} كم · وصول ${ar(req.eta)} دقيقة</div></div>
+      </div>`:""}
+
+      <div class="card">
+        <div class="card-h"><h2>تنبؤ نبض</h2>
+          <span class="m"><b>${t==="ALL"?"O-":t}</b> · <button class="link" data-go="fc">تفاصيل التنبؤ</button></span></div>
+        <p class="body">${fcText(t==="ALL"?"O-":t).headline}</p>
+        <div class="conf"><i style="width:91%"></i></div>
+        <div class="chart-note" style="margin-top:5px">ثقة النموذج ٩١٪</div>
+        <div class="rec"><b>التوصية:</b> ${fcText(t==="ALL"?"O-":t).rec}</div>
+      </div>
+    </div>
+  </div>
+  ${disclaimer()}`;
+}
+
+/* خريطة الرياض التخطيطية */
+function riyadhMap(t){
+  const W=820,H=470,PX=60,PY=44;
+  const X=b=>PX+b.x*(W-PX*2), Y=b=>PY+b.y*(H-PY*2);
+  const shapes = BANKS.map(b=>{
+    const s=bankStatus(b.id,t).st, on=S.focusBank===b.id;
+    const sz = 8 + Math.sqrt(b.cap)/2.6;
+    const col = s==="crit"?"var(--red)":s==="low"?"var(--low)":"var(--ok)";
+    const x=X(b), y=Y(b);
+    let g="";
+    if(s==="crit") g=`<rect x="${x-sz/2}" y="${y-sz/2}" width="${sz}" height="${sz}" rx="2" fill="${col}"/>`;
+    else if(s==="low") g=`<path d="M${x} ${y-sz/1.7} L${x+sz/1.6} ${y+sz/2.4} L${x-sz/1.6} ${y+sz/2.4} Z" fill="var(--low-bg)" stroke="${col}" stroke-width="1.6"/>`;
+    else g=`<circle cx="${x}" cy="${y}" r="${sz/2}" fill="${col}"/>`;
+    const lab = `<text x="${x}" y="${y+sz/2+15}" text-anchor="middle" fill="${on?col:"var(--ink-2)"}" font-size="12">${b.name}</text>`;
+    const ring = on?`<circle cx="${x}" cy="${y}" r="${sz/2+9}" fill="none" stroke="${col}" stroke-width="1.2" opacity=".55"/>`:"";
+    return `<g class="mk" data-b="${b.id}">${ring}${g}${lab}</g>`;
+  }).join("");
+
+  // مسار الطلب العاجل: خط متقطع من الطالب إلى المصدر المطابَق + بطاقة الزمن
+  const rq = S.reqs[0];
+  let route = "";
+  if(rq){
+    const ax=X(rq.bank), ay=Y(rq.bank), bx=X(rq.src), by=Y(rq.src);
+    const mxp=(ax+bx)/2, myp=(ay+by)/2;
+    const txt=`${rq.type} · ${ar(rq.units)} وحدات · ${ar(rq.eta)} دقيقة`;
+    const w=txt.length*7.2+24;
+    route = `<g>
+      <line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="var(--red)" stroke-width="1.4" stroke-dasharray="5 5" opacity=".6"/>
+      <g transform="translate(${Math.min(W-w-8,Math.max(8,mxp-w/2))},${myp-14})">
+        <rect width="${w}" height="27" rx="6" fill="var(--ink)"/>
+        <text x="${w/2}" y="18" text-anchor="middle" fill="#fff" font-size="12">${txt}</text></g></g>`;
+  }
+
+  const f = S.focusBank?BANKS.find(b=>b.id===S.focusBank):null;
+  const tip = f?(()=>{const bt=t==="ALL"?"O-":t; const r=S.inv[f.id][bt];
+    const x=X(f), y=Y(f);
+    const txt=`${bt} · ${ar(r.units)} وحدة · الآمن ${ar(r.safe)}`;
+    const w=txt.length*7.4+22;
+    return `<g transform="translate(${Math.min(W-w-10,Math.max(10,x-w/2))},${y-46})">
+      <rect width="${w}" height="28" rx="6" fill="var(--ink)"/>
+      <text x="${w/2}" y="18" text-anchor="middle" fill="#fff" font-size="12">${txt}</text></g>`})():"";
+
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <!-- حدود الرياض تخطيطياً -->
+    <rect x="${PX-14}" y="${PY-14}" width="${W-PX*2+28}" height="${H-PY*2+28}" rx="120"
+      fill="none" stroke="var(--line)" stroke-width="1.4"/>
+    <!-- وادي حنيفة -->
+    <path d="M${PX+60} ${PY-14} C ${PX+20} ${H*0.3}, ${PX+95} ${H*0.55}, ${PX+35} ${H-PY+14}"
+      fill="none" stroke="var(--line)" stroke-width="1.4"/>
+    <!-- محاور -->
+    <line x1="${PX-14}" x2="${W-PX+14}" y1="${H/2}" y2="${H/2}" stroke="var(--line-2)"/>
+    <line y1="${PY-14}" y2="${H-PY+14}" x1="${W*0.47}" x2="${W*0.47}" stroke="var(--line-2)"/>
+    <text x="${W*0.78}" y="${PY+2}" class="axis">الشمال</text>
+    <text x="${W*0.44}" y="${H-PY+6}" class="axis">الجنوب</text>
+    <text x="${W-PX+2}" y="${H*0.62}" class="axis">الشرق</text>
+    <text x="${PX-6}" y="${H*0.46}" class="axis">الغرب</text>
+    ${route}${shapes}${tip}
+  </svg>`;
+}
+
+function disclaimer(){
+  return `<p class="disc">الأرقام والمنشآت في هذا العرض مرجعية لغرض التجربة ولا تمثّل مخزوناً فعلياً لأي جهة.
+  تصفية الصلاحيات هنا تقع في المتصفح وتكفي للعرض؛ في التشغيل الحقيقي تقع على الخادم قبل الإرسال.</p>`;
+}
+
+/* ═════════ بنوك الدم ═════════ */
+function viewBanks(limitTo){
+  const t = S.type==="ALL"?"O-":S.type;
+  const rows = BANKS.filter(b=>!limitTo||b.id===limitTo)
+    .map(b=>({b,...bankStatus(b.id,S.type), r:S.inv[b.id][t]}))
+    .filter(o=>S.bankFilter==="all"||!S.bankFilter||o.st===S.bankFilter)
+    .sort((a,c)=>({crit:0,low:1,ok:2}[a.st]-{crit:0,low:1,ok:2}[c.st]) || (c.r.units/c.r.safe)-(a.r.units/a.r.safe));
+  const f=["all","crit","low","ok"], fl={all:"الكل",crit:"حرج",low:"منخفض",ok:"كافٍ"};
+  return `<div class="card">
+    <div class="filters">
+      ${f.map(k=>`<button class="tab ${(S.bankFilter||"all")===k?"on":""}" data-bf="${k}">${fl[k]}</button>`).join("")}
+      <span class="count">المعروض ${ar(rows.length)} من ${ar(limitTo?1:13)} بنك دم</span>
+    </div>
+    <table><thead><tr>
+      <th>بنك الدم</th><th>النطاق والقطاع</th><th>إجمالي الوحدات</th>
+      <th>${t} — المتوفر / الآمن</th><th>الحالة</th></tr></thead>
+      <tbody>${rows.map(o=>`<tr data-b="${o.b.id}" class="${S.focusBank===o.b.id?"on":""}">
+        <td class="nm">${o.b.name}</td>
+        <td style="color:var(--muted)">${o.b.d} · ${o.b.z}</td>
+        <td class="num">${ar(totalUnits(o.b.id))}</td>
+        <td class="ratio"><b style="color:${o.st==="crit"?"var(--red)":"inherit"}">${o.r.units}</b> / ${o.r.safe}</td>
+        <td><span class="st ${o.st}"><i></i>${SL[o.st].t}</span></td></tr>`).join("")}
+      </tbody></table>
+    ${S.focusBank?bankDetail(BANKS.find(b=>b.id===S.focusBank)):
+      `<p class="chart-note" style="margin-top:12px">اضغط أي صف لعرض تفاصيل البنك.</p>`}
+  </div>${disclaimer()}`;
+}
+
+function bankDetail(b){
+  return `<div style="margin-top:16px;border-top:1px solid var(--line);padding-top:16px">
+    <div class="card-h"><h2>${b.full}</h2><span class="m">${b.d} · ${b.z} · السعة ${ar(b.cap)} وحدة</span></div>
+    <div class="grid2">
+      <div>${TYPES.slice(0,4).map(bt=>invLine(b.id,bt)).join("")}</div>
+      <div>${TYPES.slice(4).map(bt=>invLine(b.id,bt)).join("")}</div>
+    </div></div>`;
+}
+function invLine(bid,bt){
+  const r=S.inv[bid][bt], s=statusOf(r.units,r.safe), p=Math.min(100,r.units/r.safe*100);
+  return `<div class="inv-row"><span class="bt">${bt}</span>
+    <span class="inv-bar"><i style="width:${p}%;background:${s==="ok"?"var(--ok)":s==="low"?"var(--low)":"var(--red)"}"></i></span>
+    <span class="n"><b>${r.units}</b> / ${r.safe}</span></div>`;
+}
+
+/* ═════════ صندوق الطلبات ═════════ */
+function viewInbox(limitTo){
+  const all = S.reqs.filter(r=>!limitTo||r.bank.id===limitTo||r.src.id===limitTo);
+  const st = S.reqFilter||"all";
+  const rows = all.filter(r=>st==="all"||r.state===st);
+  const fl=["all","تم القبول","قيد النقل","بانتظار الموافقة"];
+  const focus = rows.find(r=>r.id===S.focusReq)||rows[0];
+  return `<div class="cols">
+    <div class="col-main">
+      <div class="filters">
+        ${fl.map(k=>`<button class="tab ${st===k?"on":""}" data-rf="${k}">${k==="all"?"الكل":k}</button>`).join("")}
+        <span class="count">المعروض ${ar(rows.length)} من ${ar(all.length)} طلبات</span>
+      </div>
+      ${rows.length?rows.map(r=>`<div class="req ${focus&&focus.id===r.id?"on":""}" data-r="${r.id}">
+        <div class="req-top">
+          <div><div class="t">${r.bank.name}</div>
+            <div class="d">${r.why} — ${ar(r.units)} · ${r.type} ${r.units>1?"وحدات":"وحدة"}</div></div>
+          <div class="r"><div class="l">المطابقة الآلية</div><div class="v">${r.src.name}</div></div>
+          <div class="r"><div class="v num">${r.km} كم · ${ar(r.eta)} دقيقة</div>
+            <div class="state ${r.cls}">${r.state}</div></div>
+        </div></div>`).join(""):`<div class="empty">لا طلبات بهذه الحالة.</div>`}
+    </div>
+    <div class="col-side">
+      ${focus?`<div class="card alert-card">
+        <div class="card-h"><h2><span class="tag">${focus.urgent?"⚠ ":""}طلب ${focus.bank.name}</span></h2>
+          <span class="m">${focus.ago}</span></div>
+        <p class="body">${focus.bank.full} يطلب <b>${ar(focus.units)} · ${focus.type}</b> — ${focus.why}.</p>
+        <div class="match"><div class="l">المطابقة الآلية</div><div class="n">${focus.src.full}</div>
+          <div class="d">${ar(S.inv[focus.src.id][focus.type].units)} وحدة متاحة · ${focus.km} كم · وصول ${ar(focus.eta)} دقيقة</div></div>
+        <div style="margin-top:12px">
+          <div class="stat-line"><span class="k">حالة الطلب</span><span class="v">${focus.state}</span></div>
+          <div class="stat-line"><span class="k">الفصيلة المطلوبة</span><span class="v">${focus.type}</span></div>
+          <div class="stat-line"><span class="k">البدائل المتوافقة</span><span class="v" style="font-weight:400">${COMPAT[focus.type].join(" · ")}</span></div>
+        </div>
+        ${S.user.can.includes("act")?`<div style="display:flex;gap:8px;margin-top:14px">
+          <button class="btn btn-sm" data-acc="${focus.id}">اعتماد المطابقة</button>
+          <button class="btn-o" data-open="${focus.bank.id}">عرض بنك الدم الطالب</button></div>`
+          :`<p class="chart-note" style="margin-top:12px">دورك للاطلاع فقط — الاعتماد يحتاج صلاحية تشغيلية.</p>`}
+      </div>`:""}
+    </div>
+  </div>${disclaimer()}`;
+}
+
+/* ═════════ تنبؤ نبض ═════════ */
+function fcText(t){
+  const crit=BANKS.filter(b=>S.inv[b.id][t].units<S.inv[b.id][t].safe*0.5);
+  const exp=BANKS.reduce((a,b)=>a+S.inv[b.id][t].expiring,0);
+  const zones=[...new Set(crit.map(b=>b.z))].slice(0,2).join(" و");
+  const need=crit.reduce((a,b)=>a+(S.inv[b.id][t].safe-S.inv[b.id][t].units),0);
+  const srcs=BANKS.filter(b=>S.inv[b.id][t].units>S.inv[b.id][t].safe*1.15).slice(0,2).map(b=>b.full);
+  return {
+    crit, exp, need,
+    headline:`نقص متوقع في ${zones||"وسط"} الرياض خلال ٧٢ ساعة — ${ar(crit.length)} بنوك تحت نصف الحد الآمن و${ar(exp)} وحدة تنتهي صلاحيتها خلال ٦ أيام.`,
+    rec:`نقل ${ar(need)} وحدة من ${srcs.join(" و")||"المصرف الإقليمي"}، وحملة تبرع موجّهة لحاملي ${t} في النرجس والياسمين.`
+  };
+}
+
+function viewForecast(limitTo){
+  const t=S.type==="ALL"?"O-":S.type, f=fcText(t);
+  const banks=(limitTo?BANKS.filter(b=>b.id===limitTo):f.crit).slice(0,5);
+  const waste=[...BANKS].sort((a,b)=>S.inv[b.id][t].expiring-S.inv[a.id][t].expiring).slice(0,5);
+  const mxW=Math.max(1,...waste.map(b=>S.inv[b.id][t].expiring));
+  return `<div class="cols">
+    <div class="col-main">
+      <div class="card">
+        <div class="card-h"><h2>مسار مخزون ${t} في ${limitTo?BANKS.find(b=>b.id===limitTo).name:"شمال ووسط الرياض"}</h2>
+          <span class="m">توقّع ٧٢ ساعة · المنطقة المظلّلة = نطاق الحد الآمن</span></div>
+        ${fcChart(t,limitTo)}
+        <div class="map-legend">
+          <span class="lg"><i style="background:var(--ink);height:2px;width:16px"></i>المخزون المتوقّع</span>
+          <span class="lg"><i style="background:var(--red);height:2px;width:16px"></i>تحت نصف الحد الآمن</span>
+          <span class="lg"><i style="background:var(--tint);height:10px;width:16px"></i>نطاق الحد الآمن</span>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-h"><h2>بنوك تحت نصف الحد الآمن في ${t}</h2><span class="m">مرتّبة بحسب حجم النقص</span></div>
+        ${banks.length?banks.map(b=>{const r=S.inv[b.id][t];
+          return `<div class="inv-row"><span style="min-width:140px;font-size:12.5px">${b.name}</span>
+            <span class="inv-bar"><i style="width:${Math.min(100,r.units/r.safe*100)}%"></i></span>
+            <span class="n"><b>${r.units}</b> / ${r.safe}</span>
+            <span class="n" style="min-width:78px">نقص ${ar(Math.max(0,r.safe-r.units))} وحدة</span></div>`}).join("")
+          :`<div class="empty">لا بنوك تحت نصف الحد الآمن في ${t} الآن.</div>`}
+      </div>
+    </div>
+    <div class="col-side">
+      <div class="card">
+        <div class="card-h"><h2>تنبؤ نبض</h2><span class="m">${t}</span></div>
+        <p class="body">${f.headline}</p>
+        <div class="conf"><i style="width:91%"></i></div>
+        <div class="chart-note" style="margin-top:5px">ثقة النموذج ٩١٪</div>
+        <div class="rec"><b>التوصية:</b> ${f.rec}</div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>هدر متوقع</h2><span class="m">وحدات تنتهي خلال ٧ أيام</span></div>
+        <div class="bars">${waste.map(b=>{const e=S.inv[b.id][t].expiring;
+          return `<div class="b"><span class="nm2">${b.name}</span>
+            <span class="bar"><i style="width:${e/mxW*100}%"></i></span>
+            <span class="v">${ar(e)} وحدة</span></div>`}).join("")}</div>
+        <p class="chart-note" style="margin-top:10px;border-top:1px solid var(--line-2);padding-top:10px">
+          إعادة التوزيع قبل انتهاء الصلاحية أنقذت ٢٦٨ وحدة في آخر ٣٠ يوماً.</p>
+      </div>
+    </div>
+  </div>${disclaimer()}`;
+}
+
+function fcChart(t,limitTo){
+  const W=760,H=250,L=46,R=18,T=18,B=44;
+  const src=limitTo?[BANKS.find(b=>b.id===limitTo)]:BANKS;
+  const u0=src.reduce((a,b)=>a+S.inv[b.id][t].units,0);
+  const safe=src.reduce((a,b)=>a+S.inv[b.id][t].safe,0);
+  const rr=seeded(DAYSEED+7);
+  const pts=[]; let v=u0;
+  for(let i=0;i<=6;i++){ pts.push(v); v=Math.max(0, v - safe*(0.055+rr()*0.03)); }
+  const mx=Math.max(safe*1.15,...pts), sx=i=>L+i*((W-L-R)/6), sy=v=>T+(1-v/mx)*(H-T-B);
+  const line=pts.map((p,i)=>`${i?"L":"M"}${sx(i)} ${sy(p)}`).join(" ");
+  const half=safe/2, cross=pts.findIndex(p=>p<half);
+  const red=cross>0?pts.slice(cross-1).map((p,i)=>`${i?"L":"M"}${sx(cross-1+i)} ${sy(p)}`).join(" "):"";
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">
+    <rect x="${L}" y="${sy(safe)}" width="${W-L-R}" height="${Math.max(0,sy(half)-sy(safe))}" fill="var(--tint)"/>
+    <line x1="${L}" x2="${W-R}" y1="${sy(half)}" y2="${sy(half)}" stroke="var(--red)" stroke-dasharray="5 5" stroke-width="1.2"/>
+    <text x="${W-R-8}" y="${sy(half)-7}" text-anchor="end" fill="var(--red)" font-size="11">نصف الحد الآمن</text>
+    <path d="${line}" fill="none" stroke="var(--ink)" stroke-width="2"/>
+    ${red?`<path d="${red}" fill="none" stroke="var(--red)" stroke-width="2"/>`:""}
+    ${pts.map((p,i)=>`<circle cx="${sx(i)}" cy="${sy(p)}" r="3" fill="${p<half?"var(--red)":"var(--ink)"}"/>`).join("")}
+    <line x1="${L}" x2="${W-R}" y1="${H-B}" y2="${H-B}" stroke="var(--line)"/>
+    ${["الآن","١٢ ساعة","٢٤ ساعة","٣٦ ساعة","٤٨ ساعة","٦٠ ساعة","٧٢ ساعة"]
+      .map((l,i)=>`<text x="${sx(i)}" y="${H-B+20}" text-anchor="middle" class="axis">${l}</text>`).join("")}
+  </svg>`;
+}
+
+/* ═════════ شاشة المستشفى: بنك دمك ═════════ */
+function viewMine(b){
+  const worst=TYPES.map(bt=>({bt,...S.inv[b.id][bt],st:statusOf(S.inv[b.id][bt].units,S.inv[b.id][bt].safe)}))
+    .sort((a,c)=>(a.units/a.safe)-(c.units/c.safe));
+  const need=worst.filter(x=>x.st!=="ok");
+  const t=S.type==="ALL"?worst[0].bt:S.type;
+  const near=BANKS.filter(x=>x.id!==b.id && dist(b,x)<=45 && S.inv[x.id][t].units>S.inv[x.id][t].safe)
+    .sort((x,y)=>dist(b,x)-dist(b,y)).slice(0,4);
+  return `<div class="cols">
+    <div class="col-main">
+      <div class="card">
+        <div class="card-h"><h2>الفصائل الثمانية</h2>
+          <span class="m">الحد الآمن محسوب على استهلاك ٦ أيام</span></div>
+        <table><thead><tr><th>الفصيلة</th><th>المتوفر</th><th>الحد الآمن</th>
+          <th>أيام التغطية</th><th>الطلب اليومي</th><th>قرب الانتهاء</th><th>الحالة</th></tr></thead>
+        <tbody>${worst.map(x=>`<tr data-t2="${x.bt}">
+          <td class="nm num">${x.bt}</td><td class="num">${ar(x.units)}</td><td class="num" style="color:var(--muted)">${ar(x.safe)}</td>
+          <td class="num">${(x.units/x.daily).toFixed(1)}</td><td class="num" style="color:var(--muted)">${ar(x.daily)}</td>
+          <td class="num" style="color:var(--muted)">${ar(x.expiring)}</td>
+          <td><span class="st ${x.st}"><i></i>${SL[x.st].t}</span></td></tr>`).join("")}</tbody></table>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-h"><h2>حركة الصرف والتبرع — ١٤ يوماً</h2><span class="m">${t}</span></div>
+        ${flowChart(b.id,t)}
+        <div class="map-legend">
+          <span class="lg"><i style="background:var(--red);height:2px;width:16px"></i>الصرف</span>
+          <span class="lg"><i style="background:var(--ink);height:2px;width:16px"></i>التبرع</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-side">
+      <div class="card alert-card">
+        <div class="card-h"><h2>ما يحتاج قراراً الآن</h2><span class="m">${b.name}</span></div>
+        ${need.length?need.slice(0,3).map(x=>`<div style="padding:9px 0;border-bottom:1px solid var(--line-2)">
+          <p class="body"><b style="color:${x.st==="crit"?"var(--red)":"var(--low)"}">${x.bt}</b> —
+          ${ar(x.units)} وحدة مقابل حد آمن ${ar(x.safe)}. تغطية ${(x.units/x.daily).toFixed(1)} يوم.
+          يلزم <b>${ar(x.safe-x.units)}</b> وحدة.</p></div>`).join("")
+          :`<div class="empty">كل الفصائل فوق الحد الآمن.</div>`}
+        ${S.user.can.includes("act")&&need.length?`<button class="btn btn-sm" style="margin-top:12px" data-ask="${need[0].bt}">
+          أرسل طلب ${need[0].bt} إلى الشبكة</button>`:""}
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>أقرب مصادر متوافقة</h2><span class="m">${t} · ضمن ٤٥ كم</span></div>
+        ${near.length?near.map(x=>`<div class="inv-row">
+          <span style="min-width:118px;font-size:12.5px">${x.name}</span>
+          <span class="n" style="min-width:70px">${ar(S.inv[x.id][t].units)} وحدة</span>
+          <span class="n" style="min-width:74px">${dist(b,x).toFixed(1)} كم</span>
+          <span class="n" style="min-width:62px">${ar(Math.round(dist(b,x)*1.6+6))} دقيقة</span></div>`).join("")
+          :`<div class="empty">لا مصدر فائض ضمن ٤٥ كم لهذه الفصيلة.</div>`}
+        <p class="chart-note" style="margin-top:10px">لا خريطة منطقة هنا: نطاقك منشأة واحدة، والخريطة بنقطة واحدة لا تفيدك.</p>
+      </div>
+    </div>
+  </div>${disclaimer()}`;
+}
+
+function flowChart(bid,t){
+  const W=760,H=210,L=40,R=16,T=14,B=34;
+  const r=seeded(DAYSEED*3+bid.length*31), base=S.inv[bid][t].daily;
+  const out=[],inn=[];
+  for(let i=0;i<14;i++){out.push(base*(0.7+r()*0.8)); inn.push(base*(0.65+r()*0.9));}
+  const mx=Math.max(...out,...inn)*1.15;
+  const sx=i=>L+i*((W-L-R)/13), sy=v=>T+(1-v/mx)*(H-T-B);
+  const p=a=>a.map((v,i)=>`${i?"L":"M"}${sx(i)} ${sy(v)}`).join(" ");
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">
+    ${[.25,.5,.75].map(g=>`<line x1="${L}" x2="${W-R}" y1="${T+g*(H-T-B)}" y2="${T+g*(H-T-B)}" stroke="var(--line-2)"/>`).join("")}
+    <path d="${p(inn)}" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+    <path d="${p(out)}" fill="none" stroke="var(--red)" stroke-width="1.8"/>
+    <line x1="${L}" x2="${W-R}" y1="${H-B}" y2="${H-B}" stroke="var(--line)"/>
+    ${[0,4,8,13].map(i=>`<text x="${sx(i)}" y="${H-B+19}" text-anchor="middle" class="axis">${i===13?"اليوم":"يوم "+ar(14-i)}</text>`).join("")}
+  </svg>`;
+}
+
+/* ═════════ نافذة الطوارئ ═════════ */
+function viewModal(){
+  return `<div class="modal-bg"><div class="modal">
+    <h3>إعلان وصول طوارئ</h3>
+    <p>يوسّع نطاقك إلى ١٣ منشأة لمدة ٣٠ دقيقة. اكتب سبباً واضحاً لا يقل عن عشرة أحرف — يُسجَّل باسمك في سجل التدقيق.</p>
+    ${S.modalErr?`<div class="err">${S.modalErr}</div>`:""}
+    <textarea id="why" placeholder="مثال: حادث مروري جماعي على طريق الملك فهد — تفعيل خطة الإصابات الجماعية"></textarea>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn" id="emgOk">تفعيل الوصول</button>
+      <button class="btn-o" id="emgNo">إلغاء</button></div>
+  </div></div>`;
+}
+
+/* ═════════ العرض والأحداث ═════════ */
+function render(){
+  const r=$("#root");
+  r.innerHTML = S.screen==="gate"?viewGate()
+    : S.screen==="login"?viewLogin()
+    : S.screen==="idp"?viewIdp()
+    : viewApp();
+  bind();
+}
+
+function bind(){
+  const on=(sel,ev,fn)=>document.querySelectorAll(sel).forEach(e=>e.addEventListener(ev,fn));
+
+  on(".gate","click",e=>{S.gate=e.currentTarget.dataset.gate;S.screen="login";S.loginErr=null;render()});
+  on("#back","click",()=>{
+    if(S.screen==="idp"){S.screen="login";S.idpErr=null}
+    else {S.screen="gate";S.gate=null;S.usr="";S.usrRaw="";S.fac="";S.notice=null}
+    render();
+  });
+
+  const go=()=>{
+    const raw=($("#usr").value||"").trim();
+    const u=raw.toLowerCase()||"زائر";
+    let fac=$("#fac")?$("#fac").value:null;
+    const rec=USERS[u];
+    S.notice=null; S.loginErr=null; S.usrRaw=raw||"زائر";
+
+    // حساب تجريبي معروف جاء من المدخل الخطأ: نحوّله بدل أن نوقفه
+    if(rec && rec.gate!==S.gate){
+      S.gate=rec.gate;
+      S.notice=`«${esc(u)}» يتبع ${rec.gate==="nafees"?"منصة نفيس":"منسوبي المستشفى"} — حوّلناك تلقائياً إلى المدخل الصحيح.`;
+    }
+    // حساب معروف مرتبط بمنشأة: نثبّت منشأته
+    if(rec && rec.scope!=="all" && rec.scope!=="none"){
+      if(fac && fac!==rec.scope){
+        const b=BANKS.find(x=>x.id===rec.scope);
+        S.notice=`«${esc(u)}» مرتبط بـ«${b.full}» — فُتحت منشأته بدل التي اخترتها.`;
+      }
+      fac=rec.scope;
+    }
+    S.usr=u; S.fac=fac||null; S.screen="idp"; render();
+  };
+  on("#go","click",go);
+  on("#usr","keydown",e=>{if(e.key==="Enter")go()});
+
+  on(".acct[data-u]","click",e=>{
+    const u=e.currentTarget.dataset.u;
+    S.usr=u; S.usrRaw=u; S.idpErr=null;
+    const r=USERS[u];
+    if(r && r.scope!=="all" && r.scope!=="none") S.fac=r.scope;
+    render();
+  });
+  on("#auth","click",()=>{
+    const rec=resolveUser();
+    if(rec.gate!==S.gate) S.gate=rec.gate;
+    S.user=rec;
+    S.view = rec.gate==="nafees"?"ops":"mine";
+    if(S.pendingView && tabsFor(rec,false).some(x=>x[0]===S.pendingView)){ S.view=S.pendingView; S.pendingView=null; }
+    S.focusBank = rec.gate==="nafees"?"ksh":rec.scope;
+    S.reqs = buildRequests();
+    S.screen="app"; S.bankFilter="all"; S.reqFilter="all";
+    render();
+  });
+
+  on("#install","click",async e=>{
+    e.stopPropagation();
+    if(!window._pwaPrompt) return;
+    window._pwaPrompt.prompt();
+    const {outcome}=await window._pwaPrompt.userChoice;
+    window._pwaPrompt=null; S.canInstall=false; render();
+    if(outcome==="accepted") toast("تم تثبيت نبض على جهازك");
+  });
+  on("#menuBtn","click",e=>{e.stopPropagation();S.menu=!S.menu;render()});
+  on("[data-v2]","click",e=>{S.view=e.currentTarget.dataset.v2;S.menu=false;render()});
+  on("[data-go]","click",e=>{e.stopPropagation();S.view=e.currentTarget.dataset.go;render()});
+  on("#logout","click",e=>{
+    e.stopPropagation();
+    S.screen="gate";S.gate=null;S.user=null;S.usr="";S.usrRaw="";S.fac="";
+    S.notice=null;S.menu=false;S.emergency=null;S.focusBank=null;S.type="ALL";render();
+  });
+  if(S.menu) document.addEventListener("click",()=>{S.menu=false;render()},{once:true});
+
+  on(".chip","click",e=>{S.type=e.currentTarget.dataset.t;render()});
+  on(".tab[data-v]","click",e=>{S.view=e.currentTarget.dataset.v;render()});
+  on("[data-bf]","click",e=>{S.bankFilter=e.currentTarget.dataset.bf;render()});
+  on("[data-rf]","click",e=>{S.reqFilter=e.currentTarget.dataset.rf;render()});
+  on(".mk","click",e=>{S.focusBank=e.currentTarget.dataset.b;render()});
+  on("tbody tr[data-b]","click",e=>{S.focusBank=e.currentTarget.dataset.b;render()});
+  on("tbody tr[data-t2]","click",e=>{S.type=e.currentTarget.dataset.t2;render()});
+  on(".req","click",e=>{S.focusReq=e.currentTarget.dataset.r;render()});
+  on("[data-open]","click",e=>{e.stopPropagation();S.focusBank=e.currentTarget.dataset.open;S.view="banks";render()});
+  on("[data-acc]","click",e=>{
+    e.stopPropagation();
+    const r=S.reqs.find(x=>x.id===e.currentTarget.dataset.acc);
+    r.state="تم القبول"; r.cls="accepted";
+    toast(`اعتُمدت مطابقة ${r.bank.name} — ${ar(r.units)} وحدة ${r.type} من ${r.src.name}`);
+  });
+  on("[data-ask]","click",e=>{
+    const bt=e.currentTarget.dataset.ask, b=BANKS.find(x=>x.id===S.user.scope);
+    const rr=S.inv[b.id][bt], src=BANKS.filter(x=>x.id!==b.id&&S.inv[x.id][bt].units>S.inv[x.id][bt].safe)
+      .sort((x,y)=>dist(b,x)-dist(b,y))[0]||BANKS[0];
+    const km=dist(b,src);
+    S.reqs.unshift({id:"n"+Date.now(),bank:b,type:bt,units:rr.safe-rr.units,src,km:km.toFixed(1),
+      eta:Math.round(km*1.6+6),state:"بانتظار الموافقة",cls:"waiting",urgent:false,
+      why:`طلب من ${b.name} — نقص تحت الحد الآمن`,ago:"الآن"});
+    S.view="inbox"; S.focusReq=S.reqs[0].id;
+    toast(`أُرسل طلب ${ar(rr.safe-rr.units)} وحدة ${bt} — المطابقة الآلية: ${src.name}`);
+  });
+
+  on("#emg","click",()=>{S.modal=true;S.modalErr=null;render()});
+  on("#emgNo","click",()=>{S.modal=false;render()});
+  on("#emgOk","click",()=>{
+    const w=($("#why").value||"").trim();
+    if(w.length<10){S.modalErr="السبب قصير جداً. اكتب عشرة أحرف على الأقل.";return render()}
+    S.emergency={why:w,until:Date.now()+30*60000}; S.modal=false; S.view="ops";
+    toast("فُعّل وصول الطوارئ لمدة ٣٠ دقيقة — كل إجراء مسجَّل باسمك");
+  });
+  on("#switch","click",()=>{
+    S.screen="gate";S.gate=null;S.user=null;S.usr="";S.usrRaw="";S.fac="";S.notice=null;
+    S.emergency=null;S.focusBank=null;S.focusReq=null;S.type="ALL";render();
+  });
+}
+
+/* ═════════ تطبيق ويب: تثبيت وعمل بلا اتصال ═════════ */
+S.offline = typeof navigator!=="undefined" && navigator.onLine===false;
+
+if(typeof window!=="undefined"){
+  window.addEventListener("beforeinstallprompt", e=>{
+    e.preventDefault(); window._pwaPrompt=e; S.canInstall=true; render();
+  });
+  window.addEventListener("appinstalled", ()=>{ S.canInstall=false; render(); });
+  window.addEventListener("online",  ()=>{ S.offline=false; render(); });
+  window.addEventListener("offline", ()=>{ S.offline=true;  render(); });
+
+  // عامل الخدمة يحتاج https أو localhost؛ عند فتح الملف مباشرة يُتجاوَز بهدوء
+  if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+    window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
+  }
+
+  // اختصارات التطبيق المثبَّت: ?s=ops أو ?s=inbox أو ?s=fc
+  const q=new URLSearchParams(location.search).get("s");
+  if(q) S.pendingView=q;
+}
+
+render();
+
+
+</script>
+</body>
+</html>
