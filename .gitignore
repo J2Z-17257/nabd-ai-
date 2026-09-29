@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+engine/outputs/
+*.sqlite*
+
+# Node
+node_modules/
+npm-debug.log*
+
+# نظام التشغيل والمحررات
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# مخرجات مؤقتة
+*.log
+tmp/
